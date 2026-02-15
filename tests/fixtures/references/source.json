@@ -1,0 +1,54 @@
+{
+    "ancestors": [
+        {
+            "_resolved": {
+                "subjects": [
+                    {
+                        "_resolved": {
+                            "title": "nested subject",
+                            "terms": [
+                                {
+                                    "term_type": "topical"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "children": [
+        {
+            "_resolved": {
+                "display_string": "child"
+            }
+        }
+    ],
+    "subjects": [
+        {
+            "_resolved": {
+                "terms": [
+                    {
+                        "title": "object subject",
+                        "term_type": "topical"
+                    }
+                ]
+            }
+        }
+    ],
+    "linked_agents": [
+        {
+            "_resolved": {
+                "title": "agent",
+                "agent_type": "person",
+                "dates": [
+                    {
+                        "begin": "2021-01",
+                        "end": "2023-12",
+                        "expression": "2021-2023"
+                    }
+                ]
+            }
+        }
+    ]
+}

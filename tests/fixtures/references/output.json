@@ -1,0 +1,37 @@
+{
+    "ancestors": [
+        {
+            "subjects": [
+                {
+                    "type": "topical",
+                    "title": "nested subject",
+                    "dates": ""
+                }
+            ],
+            "type": "collection",
+            "title": null,
+            "dates": ""
+        }
+    ],
+    "children": [
+        {
+            "type": "collection",
+            "title": "child",
+            "dates": ""
+        }
+    ],
+    "subjects": [
+        {
+            "type": "topical",
+            "title": null,
+            "dates": ""
+        }
+    ],
+    "linked_agents": [
+        {
+            "type": "person",
+            "title": "agent",
+            "dates": "2021-2023"
+        }
+    ]
+}
