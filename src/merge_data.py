@@ -25,7 +25,6 @@ MERGER_MAP = {
 
 
 def get_config(ssm_parameter_path):
-    # TODO do we have more than 10 configs and do we need to account for that?
     """Fetch config values from Parameter Store.
 
     Args:
