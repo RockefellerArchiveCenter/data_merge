@@ -59,7 +59,6 @@ class BaseMerger:
                 return "archival_object_collection"
         return data.get("jsonmodel_type")
 
-    # TODO does it make sense to just return the references?
     def combine_references(self, source_data):
         """Adds type and title fields to references, then removes unneeded resolved objects."""
         for key in ["ancestors", "children", "subjects", "linked_agents"]:
