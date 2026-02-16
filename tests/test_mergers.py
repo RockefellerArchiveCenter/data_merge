@@ -98,7 +98,8 @@ class BaseMergerTests(TestCase):
         mock_add_group.return_value = {"foo": "bar"}
         merger = self.get_merger()
         output = merger.combine_data(obj, additional_data)
-        self.assertEqual(output, {"foo": "bar"})
+        self.assertEqual(output, {"group": {"foo": "bar"}})
+        mock_add_group.assert_called_once_with(obj)
 
     @patch('src.clients.ArchivesSpaceClient.has_children')
     def test_get_target_object_type(self, mock_has_children):
@@ -125,6 +126,64 @@ class BaseMergerTests(TestCase):
         merger = self.get_merger()
         output = merger.combine_references(input)
         self.assertEqual(output, expected)
+
+    @patch('src.clients.ArchivesSpaceClient.resource_data')
+    @patch('src.mergers.BaseMerger.combine_references')
+    def test_add_group(self, mock_combine, mock_resource_data):
+        merger = self.get_merger()
+
+        """No ancestors on source object"""
+        source_data = {
+            "jsonmodel_type": "archival_object",
+            "ref": "/repositories/2/archival_objects/1",
+            "dates": [{"foo": "bar"}],
+            "title": "source data title",
+            "linked_agents": [{"title": "creator name", "role": "creator"}]}
+        mock_combine.return_value = source_data
+        output = merger.add_group(source_data)
+        self.assertEqual(output, {
+            'identifier': '/repositories/2/archival_objects/1',
+            'creators': [{'title': 'creator name', 'role': 'creator'}],
+            'dates': [{'foo': 'bar'}],
+            'title': 'source data title'})
+        mock_resource_data.assert_not_called()
+        mock_combine.assert_called_once_with(source_data)
+
+        """Ancestors on source object"""
+        ancestor_uri = "/repositories/2/archival_objects/1"
+        source_data = {
+            "jsonmodel_type": "archival_object",
+            "ref": "/repositories/2/archival_objects/1",
+            "dates": [{"foo": "bar"}],
+            "title": "source data title",
+            "linked_agents": [{"title": "creator name", "role": "creator"}],
+            "ancestors": [{"ref": ancestor_uri}]}
+        mock_combine.return_value = source_data
+        output = merger.add_group(source_data)
+        self.assertEqual(output, {
+            'identifier': '/repositories/2/archival_objects/1',
+            'creators': [{'title': 'creator name', 'role': 'creator'}],
+            'dates': [{'foo': 'bar'}],
+            'title': 'source data title'})
+        mock_resource_data.assert_called_once_with(ancestor_uri)
+
+        """Agent object"""
+        source_data = {
+            "jsonmodel_type": "agent_person",
+            "uri": "/agents/people/1",
+            "dates_of_existence": [{"foo": "bar"}],
+            "title": "source data title"}
+        mock_combine.return_value = source_data
+        output = merger.add_group(source_data)
+        self.assertEqual(output, {
+            'identifier': '/agents/people/1',
+            'creators': [{
+                'ref': '/agents/people/1',
+                'role': 'creator',
+                'type': 'agent_person',
+                'title': 'source data title'}],
+            'dates': [{'foo': 'bar'}],
+            'title': 'source data title'})
 
 
 class ArchivalObjectMergerTests(TestCase):
@@ -264,23 +323,26 @@ class ArchivalObjectMergerTests(TestCase):
                 'extents': {'extent_type': 'folder'},
                 'position': 15})
 
-    @patch('src.mergers.BaseMerger.add_group')
+    @patch('src.mergers.ArchivalObjectMerger.add_group')
     def test_combine_data(self, mock_add_group):
-        mock_add_group.return_value = {}
+        mock_add_group.return_value = {"foo": "bar"}
         obj = {
             "instances": [{
                 "subcontainer": {"top_container": {"_resolved": {"foo": "bar"}}},
                 "digital_object": {"_resolved": {"baz": "buzz"}}}],
             "linked_agents": [{"foo": "bar"}],
-            "title": "original_title"}
+            "title": "original title"}
         additional_data = {"linked_agents": [{"baz": "buzz"}], "title": "new title"}
+        expected = {
+            'instances': [{
+                'subcontainer': {'top_container': {'_resolved': {'foo': 'bar'}}},
+                'digital_object': {'baz': 'buzz'}}],
+            'linked_agents': [{'foo': 'bar'}, {'baz': 'buzz'}],
+            'title': 'new title',
+            'group': {'foo': 'bar'}}
 
         output = self.merger.combine_data(obj, additional_data)
-        self.assertEqual(output, {})
-        mock_add_group.assert_called_once_with(
-            {'instances': [{'subcontainer': {'top_container': {'_resolved': {'foo': 'bar'}}}, 'digital_object': {'baz': 'buzz'}}],
-             'linked_agents': [{'foo': 'bar'}, {'baz': 'buzz'}],
-             'title': 'new title'})
+        self.assertEqual(output, expected)
 
 
 class ArrangementMapMergerTests(TestCase):
@@ -315,8 +377,10 @@ class ArrangementMapMergerTests(TestCase):
         output = self.merger.combine_data(obj, {})
         self.assertEqual(output, {"uri": "12345"})
         mock_handle_reference.assert_has_calls([call({"foo": "bar"}), call({"baz": "buzz"})])
-        mock_add_group.assert_called_once_with({'ancestors': [{'foo': 'bar'}, {'foo': 'bar'}], 'position': 2})
-        mock_combine_references.assert_called_once_with({"biz": "baz"})
+        mock_combine_references.assert_called_once_with({
+            'ancestors': [{'foo': 'bar'}, {'foo': 'bar'}],
+            'position': 2,
+            'group': {'biz': 'baz'}})
 
 
 class ResourceMergerTests(TestCase):
@@ -364,5 +428,7 @@ class ResourceMergerTests(TestCase):
         mock_combine_references.return_value = {"baz": "buzz"}
         output = self.merger.combine_data({}, additional_data)
         self.assertEqual(output, {"baz": "buzz"})
-        mock_add_group.assert_called_once_with({"ancestors": [{"foo": "bar"}], "position": 2})
-        mock_combine_references.assert_called_once_with({"foo": "bar"})
+        mock_combine_references.assert_called_once_with({
+            'ancestors': [{'foo': 'bar'}],
+            'position': 2,
+            'group': {'foo': 'bar'}})

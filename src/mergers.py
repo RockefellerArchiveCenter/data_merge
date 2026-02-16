@@ -45,7 +45,8 @@ class BaseMerger:
         pass
 
     def combine_data(self, source_data, additional_data):
-        return self.add_group(source_data)
+        source_data['group'] = self.add_group(source_data)
+        return source_data
 
     def get_target_object_type(self, data):
         """Returns object type.
@@ -77,7 +78,6 @@ class BaseMerger:
                     del obj["_resolved"]
         return source_data
 
-    # TODO this is a little counter intuitive; could just return the group rather than returning the whole object.
     def add_group(self, source_data):
         """Adds group object, with data about the highest-level collection containing this object."""
 
@@ -97,13 +97,12 @@ class BaseMerger:
                 "type": source_data["jsonmodel_type"],
                 "title": source_data["title"]}]
 
-        source_data["group"] = {
+        return {
             "identifier": group_obj.get("ref", group_obj.get("uri")),
             "creators": creators,
             "dates": group_obj.get("dates", group_obj.get("dates_of_existence", [])),
             "title": group_obj.get("title"),
         }
-        return source_data
 
 
 class ArchivalObjectMerger(BaseMerger):
@@ -257,8 +256,8 @@ class ArchivalObjectMerger(BaseMerger):
                 del instance["sub_container"]["top_container"]["_resolved"]
             if instance.get("digital_object"):
                 instance["digital_object"] = instance["digital_object"]["_resolved"]
-        with_group = self.add_group(source_data)
-        return self.combine_references(with_group)
+        source_data['group'] = self.add_group(source_data)
+        return self.combine_references(source_data)
 
 
 class ArrangementMapMerger(BaseMerger):
@@ -283,7 +282,7 @@ class ArrangementMapMerger(BaseMerger):
         """Adds Cartographer ancestors to ArchivesSpace resource record."""
         additional_data["ancestors"] = [self.cartographer_client.handle_reference(a) for a in source_data.get("ancestors", [])]
         additional_data["position"] = source_data["order"]
-        additional_data = self.add_group(additional_data)
+        additional_data["group"] = self.add_group(additional_data)
         return self.combine_references(additional_data)
 
 
@@ -322,8 +321,8 @@ class ResourceMerger(BaseMerger):
         """
         source_data["ancestors"] = additional_data["ancestors"]
         source_data["position"] = additional_data.get("order", 0) if additional_data else 0
-        with_group = self.add_group(source_data)
-        return self.combine_references(with_group)
+        source_data["group"] = self.add_group(source_data)
+        return self.combine_references(source_data)
 
 
 class SubjectMerger(BaseMerger):
