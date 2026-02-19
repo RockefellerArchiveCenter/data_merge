@@ -1,0 +1,25 @@
+[
+    {
+        "instance_type": "mixed materials",
+			"sub_container": {
+				"top_container": {
+					"ref": "/repositories/2/top_containers/8779",
+					"_resolved": {
+						"type": "box"
+					}
+				}
+			}
+    },
+    {
+        "instance_type": "microform",
+        "sub_container": {
+            "jsonmodel_type": "sub_container",
+            "top_container": {
+                "ref": "/repositories/2/top_containers/192607",
+                "_resolved": {
+                    "type": "reel"
+                }
+            }
+        }
+    }
+]
