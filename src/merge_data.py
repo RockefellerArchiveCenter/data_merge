@@ -110,7 +110,7 @@ def send_failure_message(config, data, object_type, exception):
 def lambda_handler(event, context):
     logger.info("Message batch received.")
 
-    config = get_config(full_config_path=f"/{getenv('ENV')}/{getenv('APP_CONFIG_PATH')}")
+    config = get_config(f"/{getenv('ENV')}/{getenv('APP_CONFIG_PATH')}")
     for record in event['Records']:
         object_data = json.loads(record['body'])
         attributes = record['messageAttributes']
