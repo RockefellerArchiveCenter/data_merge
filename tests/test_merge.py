@@ -41,7 +41,7 @@ def set_up_sns():
 def test_lambda_handler(mock_failure_message, mock_success_message, mock_merge, mock_init, mock_config):
     mock_config.return_value = DEFAULT_CONFIG
     mock_init.return_value = None
-    mock_merge.return_value = {"data": "merged"}
+    mock_merge.return_value = {"data": "merged"}, "object"
     records = [
         {
             'body': '{"uri": "/repositories/2/archival_objects/1"}',
@@ -61,7 +61,7 @@ def test_lambda_handler(mock_failure_message, mock_success_message, mock_merge, 
     mock_merge.assert_has_calls([
         call({"uri": "/repositories/2/archival_objects/1"}),
         call({"uri": "/repositories/2/archival_objects/2"})])
-    mock_success_message.assert_called_with(DEFAULT_CONFIG, {"data": "merged"})
+    mock_success_message.assert_called_with(DEFAULT_CONFIG, {"data": "merged"}, "object")
     assert mock_success_message.call_count == 2
     mock_failure_message.assert_not_called()
 
@@ -94,7 +94,7 @@ def test_lambda_handler_with_exception(mock_failure_message, mock_success_messag
 @mock_aws
 def test_success_message():
     queue = set_up_sns()
-    send_success_message(DEFAULT_CONFIG, {"uri": "/repositories/2/archival_objects/1"})
+    send_success_message(DEFAULT_CONFIG, {"uri": "/repositories/2/archival_objects/1"}, "object")
     messages = queue.receive_messages(MaxNumberOfMessages=1)
     message_body = json.loads(messages[0].body)
     assert message_body['Message'] == '{"uri": "/repositories/2/archival_objects/1"}'
@@ -106,6 +106,10 @@ def test_success_message():
         'requested_action': {
             'Type': 'String',
             'Value': 'transform',
+        },
+        'object_type': {
+            'Type': 'String',
+            'Value': 'object',
         }
     }
 

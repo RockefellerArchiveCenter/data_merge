@@ -56,7 +56,7 @@ def get_config(ssm_parameter_path):
         return configuration
 
 
-def send_success_message(config, data):
+def send_success_message(config, data, object_type):
     client = boto3.client('sns', region_name=getenv('AWS_DEFAULT_REGION', 'us-east-1'))
     client.publish(
         TopicArn=config['SNS_TOPIC'],
@@ -71,6 +71,10 @@ def send_success_message(config, data):
             'requested_action': {
                 'DataType': 'String',
                 'StringValue': 'transform',
+            },
+            'object_type': {
+                'DataType': 'String',
+                'StringValue': object_type,
             }
         })
 
@@ -110,15 +114,15 @@ def send_failure_message(config, data, object_type, exception):
 def lambda_handler(event, context):
     logger.info("Message batch received.")
 
-    config = get_config(f"/{getenv('ENV')}/{getenv('APP_CONFIG_PATH')}")
+    config = get_config(FULL_CONFIG_PATH)
     for record in event['Records']:
         object_data = json.loads(record['body'])
         attributes = record['messageAttributes']
         object_type = attributes['object_type']['stringValue']
         try:
             merger = MERGER_MAP[object_type]
-            data = merger(config).merge(object_data)
-            send_success_message(config, data)
+            data, target_object_type = merger(config).merge(object_data)
+            send_success_message(config, data, target_object_type)
         except Exception as e:
             print(e)
             send_failure_message(config, object_data, object_type, e)
