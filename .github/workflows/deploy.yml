@@ -15,8 +15,7 @@ jobs:
 
     env:
       LAMBDA_NAME: data_merge
-      LAMBDA_HANDLER_CODE: src/merge_data.py
-      BASENAME: merge_data.py
+      LAMBDA_HANDLER_CODE_DIR: src
 
     steps:
       - name: Checkout code
@@ -38,8 +37,7 @@ jobs:
 
       - name: Make zip file
         run: |
-          cp ${{ env.LAMBDA_HANDLER_CODE }} ${{ env.BASENAME }}
-          zip ${{ env.LAMBDA_NAME }}.zip ${{ env.BASENAME }}
+          zip -r ${{ env.LAMBDA_NAME }}.zip ${{ env.LAMBDA_HANDLER_CODE_DIR }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
