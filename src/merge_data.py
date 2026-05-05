@@ -60,7 +60,7 @@ def send_success_message(config, data, object_type):
     client = boto3.client('sns', region_name=getenv('AWS_DEFAULT_REGION', 'us-east-1'))
     client.publish(
         TopicArn=config['SNS_TOPIC'],
-        MessageGroupId=f'{SERVICE_NAME}-{data["uri"]}',  # TODO is it legal to put a URI in here or do we need to convert to another ID?
+        MessageGroupId=f'{SERVICE_NAME}-{data["uri"]}',
         MessageDeduplicationId=f'{SERVICE_NAME}-{data["uri"]}-success',
         Message=json.dumps(data, default=str),
         MessageAttributes={
