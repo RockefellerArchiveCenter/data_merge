@@ -9,8 +9,7 @@ from src.mergers import (ArchivalObjectMerger, ArrangementMapMerger,
 
 DEFAULT_CONFIG = {
     "AS_BASEURL": "https://as.rockarch.org/api",
-    "AS_USERNAME": "admin",
-    "AS_PASSWORD": "admin",
+    "AS_SESSION_TOKEN": "mysecretsessiontoken",
     "CARTOGRAPHER_BASEURL": "https://cartographer.rockarch.org",
     "CARTOGRAPHER_HEALTH_CHECK_PATH": "/status",
     "SNS_TOPIC": "sns-topic"
@@ -41,7 +40,7 @@ class BaseMergerTests(TestCase):
         mock_archivesspace_client.return_value = None
         BaseMerger(DEFAULT_CONFIG)
         mock_cartographer_client.assert_called_once_with("https://cartographer.rockarch.org")
-        mock_archivesspace_client.assert_called_once_with("https://as.rockarch.org/api", "admin", "admin")
+        mock_archivesspace_client.assert_called_once_with("https://as.rockarch.org/api", "mysecretsessiontoken")
 
     @patch('src.mergers.BaseMerger.get_identifier')
     @patch('src.mergers.BaseMerger.get_target_object_type')

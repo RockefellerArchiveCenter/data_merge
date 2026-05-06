@@ -32,7 +32,7 @@ class ArchivesSpaceClientTests(TestCase):
     @patch('asnake.client.ASnakeClient.authorize')
     def setUp(self, mock_authorize, mock_get):
         mock_get.return_value = MockResponse({}, 200)
-        self.client = ArchivesSpaceClient("https://as.rockarch.org/api", "admin", "admin")
+        self.client = ArchivesSpaceClient("https://as.rockarch.org/api", "mysecretsessiontoken")
 
     @patch('asnake.client.ASnakeClient.get')
     def test_has_children(self, mock_get):
