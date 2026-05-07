@@ -13,7 +13,9 @@ class ArchivesSpaceClient(object):
     def __init__(self, baseurl, session_token):
         self.client = ASpace(
             baseurl=baseurl,
-            session_token=session_token).client
+            session_token=session_token,
+            username=None,
+            password=None).client
 
     def has_children(self, uri):
         """
