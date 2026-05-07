@@ -10,11 +10,10 @@ class MissingArchivalObjectError(Exception):
 
 class ArchivesSpaceClient(object):
 
-    def __init__(self, baseurl, username, passsword):
+    def __init__(self, baseurl, session_token):
         self.client = ASpace(
             baseurl=baseurl,
-            username=username,
-            password=passsword).client
+            session_token=session_token).client
 
     def has_children(self, uri):
         """

@@ -14,8 +14,7 @@ class BaseMerger:
     def __init__(self, config):
         self.as_client = ArchivesSpaceClient(
             config['AS_BASEURL'],
-            config['AS_USERNAME'],
-            config['AS_PASSWORD'])
+            config['AS_SESSION_TOKEN'])
         self.cartographer_client = CartographerClient(config['CARTOGRAPHER_BASEURL'])
 
     def merge(self, source_data):

@@ -56,6 +56,14 @@ def get_config(ssm_parameter_path):
         return configuration
 
 
+def get_session_token(service, session_token_key):
+    ssm_client = boto3.client(
+        'ssm',
+        region_name=getenv('AWS_DEFAULT_REGION', 'us-east-1'))
+    response = ssm_client.get_parameter(Name=f"/{getenv('ENV')}/{service}/{session_token_key}")
+    return response['Parameter']['Value']
+
+
 def send_success_message(config, data, object_type):
     client = boto3.client('sns', region_name=getenv('AWS_DEFAULT_REGION', 'us-east-1'))
     client.publish(
@@ -119,6 +127,9 @@ def lambda_handler(event, context):
         object_data = json.loads(record['body'])
         attributes = record['messageAttributes']
         object_type = attributes['object_type']['stringValue']
+        source_service = attributes['service']['stringValue']
+        session_token_key = attributes['session_token_key']['stringValue']
+        config['AS_SESSION_TOKEN'] = get_session_token(source_service, session_token_key)
         try:
             merger = MERGER_MAP[object_type]
             data, target_object_type = merger(config).merge(object_data)
