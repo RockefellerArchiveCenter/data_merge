@@ -43,7 +43,7 @@ def test_lambda_handler(mock_failure_message, mock_success_message, mock_merge, 
     mock_config.return_value = DEFAULT_CONFIG
     mock_session_token.return_value = "mysecretsessiontoken"
     mock_init.return_value = None
-    mock_merge.return_value = {"data": "merged"}, "object"
+    mock_merge.return_value = {"data": "merged", "uri": "12345"}, "object"
     records = [
         {
             'body': '{"uri": "/repositories/2/archival_objects/1"}',
@@ -74,7 +74,7 @@ def test_lambda_handler(mock_failure_message, mock_success_message, mock_merge, 
     mock_merge.assert_has_calls([
         call({"uri": "/repositories/2/archival_objects/1"}),
         call({"uri": "/repositories/2/archival_objects/2"})])
-    mock_success_message.assert_called_with(DEFAULT_CONFIG, {"data": "merged"}, "object")
+    mock_success_message.assert_called_with(DEFAULT_CONFIG, {"data": "merged", "uri": "12345"}, "object")
     assert mock_success_message.call_count == 2
     mock_failure_message.assert_not_called()
 
