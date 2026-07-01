@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.0...v1.0.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* improve logging ([982c51b](https://github.com/RockefellerArchiveCenter/data_merge/commit/982c51b142d51231e28bab733c7e62b0532e26d0))
+* improve logging ([caa018a](https://github.com/RockefellerArchiveCenter/data_merge/commit/caa018a84277e62f4b59650cecf0225814c0eff8))
+
 ## 1.0.0 (2026-06-18)
 
 
