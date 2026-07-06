@@ -1,48 +1,48 @@
 archivessnake==0.10.1
     # via -r requirements.in
-attrs==25.4.0
+attrs==26.1.0
     # via archivessnake
-boltons==25.0.0
+boltons==26.0.0
     # via archivessnake
-boto3==1.42.44
+boto3==1.43.38
     # via -r requirements.in
-botocore==1.42.44
+botocore==1.43.38
     # via
     #   boto3
     #   s3transfer
-certifi==2026.1.4
+certifi==2026.6.17
     # via requests
-charset-normalizer==3.4.4
+charset-normalizer==3.4.7
     # via requests
 electronbonder==1.1
     # via -r requirements.in
-idna==3.11
+idna==3.18
     # via requests
 jmespath==1.1.0
     # via
     #   boto3
     #   botocore
-more-itertools==10.8.0
+more-itertools==11.1.0
     # via archivessnake
 python-dateutil==2.9.0.post0
     # via botocore
 pyyaml==6.0.3
     # via archivessnake
-rapidfuzz==3.14.3
+rapidfuzz==3.14.5
     # via archivessnake
-requests==2.32.5
+requests==2.34.2
     # via
     #   archivessnake
     #   electronbonder
-s3transfer==0.16.0
+s3transfer==0.19.0
     # via boto3
 six==1.17.0
     # via
     #   electronbonder
     #   python-dateutil
-structlog==25.5.0
+structlog==26.1.0
     # via archivessnake
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   botocore
     #   requests
