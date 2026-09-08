@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.3...v1.0.4) (2026-09-08)
+
+
+### Bug Fixes
+
+* **deps:** Scheduled dependency updates ([772d4d1](https://github.com/RockefellerArchiveCenter/data_merge/commit/772d4d1cf0a78c662b301c9849dbb7c334ff09fc))
+
 ## [1.0.3](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.2...v1.0.3) (2026-08-03)
 
 
