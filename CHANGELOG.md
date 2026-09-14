@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.5](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.4...v1.0.5) (2026-09-14)
+
+
+### Bug Fixes
+
+* get more meaningful data back in exception ([526c644](https://github.com/RockefellerArchiveCenter/data_merge/commit/526c64409d88e5f02e6b21d0deefa5580ee06f9a))
+* Get more useful errors back from exception ([ca63567](https://github.com/RockefellerArchiveCenter/data_merge/commit/ca63567afa25551561b792a72fa281a14fa7d331))
+
 ## [1.0.4](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.3...v1.0.4) (2026-09-08)
 
 
