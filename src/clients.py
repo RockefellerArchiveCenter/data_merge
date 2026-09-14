@@ -73,7 +73,10 @@ class ArchivesSpaceClient(object):
 
     def resource_data(self, uri):
         """Fetches a resource record with data necessary for merging an Arrangement Map."""
-        return self.client.get(uri, params={"resolve": ["subjects", "linked_agents"]}).json()
+        resp = self.client.get(uri, params={"resolve": ["subjects", "linked_agents"]})
+        if resp.status_code != 200:
+            raise Exception(f"Error fetching data from {uri}: {resp.text}")
+        return resp.json()
 
 
 class CartographerClient(object):
