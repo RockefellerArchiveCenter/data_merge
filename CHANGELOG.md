@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.7](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.6...v1.0.7) (2026-10-22)
+
+
+### Bug Fixes
+
+* update pip ([6a0c42f](https://github.com/RockefellerArchiveCenter/data_merge/commit/6a0c42f8e24a7714ad34b45f4fbf4f1b2ea02fa1))
+* update pip ([6a0c42f](https://github.com/RockefellerArchiveCenter/data_merge/commit/6a0c42f8e24a7714ad34b45f4fbf4f1b2ea02fa1))
+* update pip ([9723574](https://github.com/RockefellerArchiveCenter/data_merge/commit/97235748b30713f07fd8cc3a476f9637a6204edc))
+* update pip ([9723574](https://github.com/RockefellerArchiveCenter/data_merge/commit/97235748b30713f07fd8cc3a476f9637a6204edc))
+* update pip ([42ea20c](https://github.com/RockefellerArchiveCenter/data_merge/commit/42ea20c0332d6556bee9088accd74467f13548f3))
+
 ## [1.0.6](https://github.com/RockefellerArchiveCenter/data_merge/compare/v1.0.5...v1.0.6) (2026-10-05)
 
 
